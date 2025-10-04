@@ -199,18 +199,31 @@ export default function ToolbarEditorPlugin() {
         onMouseLeave={tooltipGroup.onGroupMouseLeave}
         className="flex items-center gap-2 overflow-x-auto p-2"
       >
-        <Button
-          size="icon"
-          variant="outline"
-          className="flex-shrink-0"
-          onClick={() => {
-            editor.update(() => {
-              $getRoot().clear();
-            });
-          }}
-        >
-          <BrushCleaningIcon />
-        </Button>
+        <Tooltip delayDuration={tooltipGroup.getTooltipProps().delayDuration}>
+          <TooltipTrigger
+            asChild
+            onMouseEnter={tooltipGroup.getTooltipProps().onMouseEnter}
+          >
+            <Button
+              size="icon"
+              variant="outline"
+              className="flex-shrink-0"
+              onClick={() => {
+                editor.update(() => {
+                  $getRoot().clear();
+                });
+              }}
+            >
+              <BrushCleaningIcon />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent className="flex items-center gap-2 px-2 py-2 pr-2.5">
+            <div className="rounded border border-slate-300 px-1 py-0.5 text-xs text-slate-300 dark:border-slate-700 dark:text-slate-700">
+              {EDITOR_SHORTCUTS.CLEAR_EDITOR}
+            </div>
+            <span className="text-sm">Clear all content</span>
+          </TooltipContent>
+        </Tooltip>
 
         <Separator
           orientation="vertical"
@@ -377,7 +390,7 @@ export default function ToolbarEditorPlugin() {
             </TooltipTrigger>
             <TooltipContent className="flex items-center gap-2 px-2 py-2 pr-2.5">
               <div className="rounded border border-slate-300 px-1 py-0.5 text-xs text-slate-300 dark:border-slate-700 dark:text-slate-700">
-                {EDITOR_SHORTCUTS.CODE_BLOCK}
+                {EDITOR_SHORTCUTS.CODE}
               </div>
               <span className="text-sm">Code</span>
             </TooltipContent>
@@ -414,7 +427,11 @@ export default function ToolbarEditorPlugin() {
         />
 
         <Select value={toolbarState.fontFamily} onValueChange={applyFontFamily}>
-          <SelectTrigger size="sm" className="w-40 flex-shrink-0">
+          <SelectTrigger
+            size="sm"
+            variant="secondary"
+            className="w-40 flex-shrink-0"
+          >
             <SelectValue placeholder="Font family" />
           </SelectTrigger>
           <SelectContent>
@@ -435,6 +452,8 @@ export default function ToolbarEditorPlugin() {
           className="flex-shrink-0"
           value={toolbarState.fontSize}
           onChange={handleFontSizeChange}
+          onMouseEnter={tooltipGroup.getTooltipProps().onMouseEnter}
+          delayDuration={tooltipGroup.getTooltipProps().delayDuration}
         />
 
         <DropdownMenu>
@@ -672,7 +691,11 @@ export default function ToolbarEditorPlugin() {
         <div className="flex-shrink-0 [&>*]:rounded-none [&>*]:first:rounded-l-md [&>*]:last:rounded-r-md">
           {(Object.keys(ELEMENT_FORMAT_OPTIONS) as Alignment[]).map(
             (alignment) => {
-              const { icon: Icon, name } = ELEMENT_FORMAT_OPTIONS[alignment];
+              const {
+                icon: Icon,
+                name,
+                shortcut,
+              } = ELEMENT_FORMAT_OPTIONS[alignment];
 
               return (
                 <Tooltip
@@ -701,7 +724,10 @@ export default function ToolbarEditorPlugin() {
                       <Icon />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>
+                  <TooltipContent className="flex items-center gap-2 px-2 py-2 pr-2.5">
+                    <div className="rounded border border-slate-300 px-1 py-0.5 text-xs text-slate-300 dark:border-slate-700 dark:text-slate-700">
+                      {shortcut}
+                    </div>
                     <span className="text-sm">{name}</span>
                   </TooltipContent>
                 </Tooltip>
@@ -731,10 +757,11 @@ export default function ToolbarEditorPlugin() {
                 <IndentDecreaseIcon />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>
-              <span className="text-sm">
-                Outdent ({EDITOR_SHORTCUTS.OUTDENT})
-              </span>
+            <TooltipContent className="flex items-center gap-2 px-2 py-2 pr-2.5">
+              <div className="rounded border border-slate-300 px-1 py-0.5 text-xs text-slate-300 dark:border-slate-700 dark:text-slate-700">
+                {EDITOR_SHORTCUTS.OUTDENT}
+              </div>
+              <span className="text-sm">Outdent</span>
             </TooltipContent>
           </Tooltip>
           <Tooltip delayDuration={tooltipGroup.getTooltipProps().delayDuration}>
@@ -752,10 +779,11 @@ export default function ToolbarEditorPlugin() {
                 <IndentIcon />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>
-              <span className="text-sm">
-                Indent ({EDITOR_SHORTCUTS.INDENT})
-              </span>
+            <TooltipContent className="flex items-center gap-2 px-2 py-2 pr-2.5">
+              <div className="rounded border border-slate-300 px-1 py-0.5 text-xs text-slate-300 dark:border-slate-700 dark:text-slate-700">
+                {EDITOR_SHORTCUTS.INDENT}
+              </div>
+              <span className="text-sm">Indent</span>
             </TooltipContent>
           </Tooltip>
         </div>
@@ -783,8 +811,11 @@ export default function ToolbarEditorPlugin() {
               <QuoteIcon />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>
-            <span className="text-sm">Quote ({EDITOR_SHORTCUTS.QUOTE})</span>
+          <TooltipContent className="flex items-center gap-2 px-2 py-2 pr-2.5">
+            <div className="rounded border border-slate-300 px-1 py-0.5 text-xs text-slate-300 dark:border-slate-700 dark:text-slate-700">
+              {EDITOR_SHORTCUTS.QUOTE}
+            </div>
+            <span className="text-sm">Quote</span>
           </TooltipContent>
         </Tooltip>
 

@@ -29,16 +29,9 @@ export default function AdaptiveLayout({ chat, editor }: AdaptiveLayoutProps) {
   const { isMobile, setViewMode, viewMode } = React.use(MobileLayoutContext);
   const [lexicalEditor] = useLexicalComposerContext();
 
-  const [hasPopulatedOnce, setHasPopulatedOnce] = React.useState(false);
-
   React.useEffect(() => {
     async function loadSampleContent() {
-      if (hasPopulatedOnce) {
-        return;
-      }
-
       const response = await fetch('/sample-content.md');
-
       const text = await response.text();
 
       lexicalEditor.update(() => {
@@ -50,12 +43,10 @@ export default function AdaptiveLayout({ chat, editor }: AdaptiveLayoutProps) {
           true
         );
       });
-
-      setHasPopulatedOnce(true);
     }
 
     void loadSampleContent();
-  }, [lexicalEditor, hasPopulatedOnce]);
+  }, [lexicalEditor]);
 
   const resetEditorSelection = React.useCallback(() => {
     lexicalEditor.update(() => {
@@ -142,51 +133,56 @@ export default function AdaptiveLayout({ chat, editor }: AdaptiveLayoutProps) {
         )}
       </div>
 
-      <div
-        className="bg-background/95 supports-[backdrop-filter]:bg-background/60 border-t backdrop-blur"
-        {...swipeHandlers}
-      >
-        <div className="flex items-center justify-center gap-1 p-2">
-          <Button
-            size="sm"
-            variant={viewMode === 'chat' ? 'default' : 'outline'}
-            className={cn('space-y-2', viewMode === 'chat' && 'flex-1')}
-            onClick={() => {
-              resetEditorSelection();
+      <div className="space-y-0.5 border-t p-2 text-center">
+        <div
+          className="bg-background/95 supports-[backdrop-filter]:bg-background/60 backdrop-blur"
+          {...swipeHandlers}
+        >
+          <div className="flex items-center justify-center gap-1">
+            <Button
+              size="sm"
+              variant={viewMode === 'chat' ? 'default' : 'outline'}
+              className={cn('space-y-2', viewMode === 'chat' && 'flex-1')}
+              onClick={() => {
+                resetEditorSelection();
 
-              setViewMode('chat');
-            }}
-          >
-            <MessageSquare className="h-4 w-4" />
-            {viewMode === 'chat' && 'Chat'}
-          </Button>
-          <Button
-            size="sm"
-            variant={viewMode === 'split' ? 'default' : 'outline'}
-            className={cn('space-y-2', viewMode === 'split' && 'flex-1')}
-            onClick={() => {
-              resetEditorSelection();
+                setViewMode('chat');
+              }}
+            >
+              <MessageSquare className="h-4 w-4" />
+              {viewMode === 'chat' && 'Chat'}
+            </Button>
+            <Button
+              size="sm"
+              variant={viewMode === 'split' ? 'default' : 'outline'}
+              className={cn('space-y-2', viewMode === 'split' && 'flex-1')}
+              onClick={() => {
+                resetEditorSelection();
 
-              setViewMode('split');
-            }}
-          >
-            <Columns2 className="h-4 w-4" />
-            {viewMode === 'split' && 'Split'}
-          </Button>
-          <Button
-            size="sm"
-            variant={viewMode === 'editor' ? 'default' : 'outline'}
-            className={cn('space-y-2', viewMode === 'editor' && 'flex-1')}
-            onClick={() => {
-              resetEditorSelection();
+                setViewMode('split');
+              }}
+            >
+              <Columns2 className="h-4 w-4" />
+              {viewMode === 'split' && 'Split'}
+            </Button>
+            <Button
+              size="sm"
+              variant={viewMode === 'editor' ? 'default' : 'outline'}
+              className={cn('space-y-2', viewMode === 'editor' && 'flex-1')}
+              onClick={() => {
+                resetEditorSelection();
 
-              setViewMode('editor');
-            }}
-          >
-            <Edit3 className="h-4 w-4" />
-            {viewMode === 'editor' && 'Editor'}
-          </Button>
+                setViewMode('editor');
+              }}
+            >
+              <Edit3 className="h-4 w-4" />
+              {viewMode === 'editor' && 'Editor'}
+            </Button>
+          </div>
         </div>
+        <span className="text-muted-foreground text-xs">
+          Swipe left/right to change view mode
+        </span>
       </div>
     </div>
   );

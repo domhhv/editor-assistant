@@ -56,6 +56,12 @@ const TEXT_FORMAT_OPTIONS: Record<
     name: 'Capitalize',
     shortcut: EDITOR_SHORTCUTS.CAPITALIZE,
   },
+  highlight: {
+    icon: HighlighterIcon,
+    key: 'isHighlight',
+    name: 'Highlight',
+    shortcut: EDITOR_SHORTCUTS.HIGHLIGHT,
+  },
   subscript: {
     icon: SubscriptIcon,
     key: 'isSubscript',
@@ -67,12 +73,6 @@ const TEXT_FORMAT_OPTIONS: Record<
     key: 'isSuperscript',
     name: 'Superscript',
     shortcut: EDITOR_SHORTCUTS.SUPERSCRIPT,
-  },
-  highlight: {
-    icon: HighlighterIcon,
-    key: 'isHighlight',
-    name: 'Highlight',
-    shortcut: EDITOR_SHORTCUTS.CLEAR_FORMATTING,
   },
 };
 /* eslint-enable perfectionist/sort-objects */

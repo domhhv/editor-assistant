@@ -15,17 +15,23 @@ import {
 } from '@/lib/constants/initial-editor-toolbar-state';
 import cn from '@/lib/utils/cn';
 
-export default function FontSizeInput({
-  className,
-  isDisabled = false,
-  onChange,
-  value,
-}: {
+type FontSizeInputProps = {
   className?: string;
+  delayDuration: number;
   isDisabled?: boolean;
   value: string;
   onChange: (value: string) => void;
-}) {
+  onMouseEnter: () => void;
+};
+
+export default function FontSizeInput({
+  className = '',
+  delayDuration,
+  isDisabled = false,
+  onChange,
+  onMouseEnter,
+  value,
+}: FontSizeInputProps) {
   const [inputValue, setInputValue] = React.useState<string>(value);
 
   React.useEffect(() => {
@@ -92,8 +98,8 @@ export default function FontSizeInput({
 
   return (
     <div className={cn('flex items-center gap-1', className)}>
-      <Tooltip>
-        <TooltipTrigger asChild>
+      <Tooltip delayDuration={delayDuration}>
+        <TooltipTrigger asChild onMouseEnter={onMouseEnter}>
           <Button
             size="icon"
             type="button"
@@ -115,6 +121,7 @@ export default function FontSizeInput({
         type="number"
         placeholder=""
         value={inputValue}
+        variant="secondary"
         onBlur={handleBlur}
         disabled={isDisabled}
         onKeyDown={handleKeyDown}
@@ -122,11 +129,11 @@ export default function FontSizeInput({
         min={MIN_ALLOWED_FONT_SIZE}
         className="h-9 w-16 text-center"
         onChange={(e) => {
-          return setInputValue(e.target.value);
+          setInputValue(e.target.value);
         }}
       />
-      <Tooltip>
-        <TooltipTrigger asChild>
+      <Tooltip delayDuration={delayDuration}>
+        <TooltipTrigger asChild onMouseEnter={onMouseEnter}>
           <Button
             size="icon"
             type="button"

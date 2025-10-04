@@ -22,23 +22,28 @@ const ELEMENT_FORMAT_OPTIONS: Record<
   {
     icon: Icon;
     name: string;
+    shortcut: string;
   }
 > = {
   left: {
     icon: AlignLeftIcon,
-    name: `Align left (${EDITOR_SHORTCUTS.LEFT_ALIGN})`,
+    name: `Align left`,
+    shortcut: EDITOR_SHORTCUTS.LEFT_ALIGN,
   },
   center: {
     icon: AlignCenterIcon,
-    name: `Align center (${EDITOR_SHORTCUTS.CENTER_ALIGN})`,
+    name: `Align center`,
+    shortcut: EDITOR_SHORTCUTS.CENTER_ALIGN,
   },
   right: {
     icon: AlignRightIcon,
-    name: `Align right (${EDITOR_SHORTCUTS.RIGHT_ALIGN})`,
+    name: `Align right`,
+    shortcut: EDITOR_SHORTCUTS.RIGHT_ALIGN,
   },
   justify: {
     icon: AlignJustifyIcon,
-    name: `Align justify (${EDITOR_SHORTCUTS.JUSTIFY_ALIGN})`,
+    name: `Align justify`,
+    shortcut: EDITOR_SHORTCUTS.JUSTIFY_ALIGN,
   },
 };
 /* eslint-enable perfectionist/sort-objects */

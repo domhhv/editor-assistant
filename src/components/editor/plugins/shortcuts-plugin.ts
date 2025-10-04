@@ -2,6 +2,7 @@ import { TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import type { HeadingTagType } from '@lexical/rich-text';
 import {
+  $getRoot,
   $getSelection,
   isModifierMatch,
   KEY_DOWN_COMMAND,
@@ -20,7 +21,6 @@ import {
   MIN_ALLOWED_FONT_SIZE,
 } from '@/lib/constants/initial-editor-toolbar-state';
 import {
-  formatCode,
   formatQuote,
   formatHeading,
   updateFontSize,
@@ -37,6 +37,7 @@ import {
   isLowercase,
   isSubscript,
   isUppercase,
+  isHighlight,
   isInsertLink,
   isCapitalize,
   isFormatCode,
@@ -44,6 +45,7 @@ import {
   isCenterAlign,
   isFormatQuote,
   isSuperscript,
+  isClearEditor,
   isJustifyAlign,
   isFormatHeading,
   isStrikeThrough,
@@ -65,7 +67,7 @@ export default function ShortcutsPlugin() {
       {
         check: isFormatParagraph,
         execute: () => {
-          return formatParagraph(editor);
+          formatParagraph(editor);
         },
       },
       {
@@ -78,103 +80,109 @@ export default function ShortcutsPlugin() {
       {
         check: isFormatBulletList,
         execute: () => {
-          return formatBulletList(editor, toolbarState.blockType);
+          formatBulletList(editor, toolbarState.blockType);
         },
       },
       {
         check: isFormatNumberedList,
         execute: () => {
-          return formatNumberedList(editor, toolbarState.blockType);
+          formatNumberedList(editor, toolbarState.blockType);
         },
       },
       {
         check: isFormatCheckList,
         execute: () => {
-          return formatCheckList(editor, toolbarState.blockType);
+          formatCheckList(editor, toolbarState.blockType);
         },
       },
       {
         check: isFormatCode,
         execute: () => {
-          return formatCode(editor, toolbarState.blockType);
+          editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
         },
       },
       {
         check: isFormatQuote,
         execute: () => {
-          return formatQuote(editor, toolbarState.blockType);
+          formatQuote(editor, toolbarState.blockType);
         },
       },
       {
         check: isStrikeThrough,
         execute: () => {
-          return editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
+          editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
+        },
+      },
+      {
+        check: isHighlight,
+        execute: () => {
+          editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'highlight');
         },
       },
       {
         check: isLowercase,
         execute: () => {
-          return editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'lowercase');
+          editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'lowercase');
         },
       },
       {
         check: isUppercase,
         execute: () => {
-          return editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'uppercase');
+          editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'uppercase');
         },
       },
       {
         check: isCapitalize,
         execute: () => {
-          return editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'capitalize');
+          editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'capitalize');
         },
       },
       {
         check: isIndent,
         execute: () => {
-          return editor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined);
+          editor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined);
         },
       },
       {
         check: isOutdent,
         execute: () => {
-          return editor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined);
+          editor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined);
         },
       },
       {
         check: isCenterAlign,
         execute: () => {
-          return editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center');
+          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center');
         },
       },
       {
         check: isLeftAlign,
         execute: () => {
-          return editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left');
+          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left');
         },
       },
       {
         check: isRightAlign,
         execute: () => {
-          return editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right');
+          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right');
         },
       },
       {
         check: isJustifyAlign,
         execute: () => {
-          return editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify');
+          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify');
         },
       },
       {
         check: isSubscript,
         execute: () => {
-          return editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'subscript');
+          editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'subscript');
         },
       },
       {
         check: isSuperscript,
         execute: () => {
-          return editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'superscript');
+          editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'superscript');
         },
       },
       {
@@ -196,7 +204,7 @@ export default function ShortcutsPlugin() {
       {
         check: isClearFormatting,
         execute: () => {
-          return clearFormatting(editor);
+          clearFormatting(editor);
         },
       },
       {
@@ -214,6 +222,14 @@ export default function ShortcutsPlugin() {
             } else {
               editor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://');
             }
+          });
+        },
+      },
+      {
+        check: isClearEditor,
+        execute: () => {
+          editor.update(() => {
+            $getRoot().clear();
           });
         },
       },

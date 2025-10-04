@@ -360,7 +360,7 @@ export default function Chat() {
             )}
           </div>
 
-          <form className="m-2 mt-4" onSubmit={submitMessage}>
+          <form onSubmit={submitMessage} className="m-1 mt-2 md:m-2 md:mt-4">
             <Input
               value={input}
               disabled={status === 'submitted'}

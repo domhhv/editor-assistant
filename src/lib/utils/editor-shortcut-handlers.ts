@@ -111,6 +111,14 @@ export function isStrikeThrough(event: KeyboardEvent) {
   );
 }
 
+export function isHighlight(event: KeyboardEvent) {
+  const { code } = event;
+
+  return (
+    code === 'KeyH' && isModifierMatch(event, { ctrlKey: true, shiftKey: true })
+  );
+}
+
 export function isIndent(event: KeyboardEvent) {
   const { code } = event;
 
@@ -201,7 +209,16 @@ export function isDecreaseFontSize(event: KeyboardEvent) {
 export function isClearFormatting(event: KeyboardEvent) {
   const { code } = event;
 
-  return code === 'Backslash' && isModifierMatch(event, CONTROL_OR_META);
+  return code === 'Slash' && isModifierMatch(event, CONTROL_OR_META);
+}
+
+export function isClearEditor(event: KeyboardEvent) {
+  const { code } = event;
+
+  return (
+    code === 'Backspace' &&
+    isModifierMatch(event, { ...CONTROL_OR_META, altKey: true })
+  );
 }
 
 export function isInsertLink(event: KeyboardEvent) {

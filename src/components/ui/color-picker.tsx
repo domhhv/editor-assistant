@@ -325,6 +325,7 @@ function ColorPickerEyeDropper({
       type="button"
       variant="outline"
       onClick={handleEyeDropper}
+      disabled={!('EyeDropper' in window)}
       className={cn('text-muted-foreground shrink-0', className)}
       {...props}
     >

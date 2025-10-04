@@ -8,6 +8,10 @@
   font-style: normal;
 }
 
+body {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
